@@ -27,48 +27,52 @@
         </el-form-item>
       </el-col>
       <el-col :span="8">
-        <el-form-item label="自动运行" prop="autoRun">
+        <el-form-item label="终端" prop="terminal">
+          <el-select placeholder="选择要使用的终端" v-model="form.terminal">
+            <el-option lable="cmd" value="cmd"></el-option>
+            <el-option lable="git" value="git"></el-option>
+          </el-select>
+        </el-form-item>
+      </el-col>
+      <el-col :span="8">
+        <el-form-item label="默认运行" prop="defaultRun">
           <el-switch
-            v-model="form.autoRun"
+            v-model="form.defaultRun"
             active-text="开启"
             inactive-text="关闭"
           />
         </el-form-item>
       </el-col>
     </el-row>
-    <el-form-item label="命令组(换行符分割)" prop="commands">
-      <el-input v-model="form.commands" type="textarea" :rows="5"></el-input>
+    <el-form-item label="命令组(换行符分割)" prop="commandLines">
+      <el-input v-model="form.commandLines" type="textarea" :rows="5"></el-input>
+    </el-form-item>
+    <el-form-item label="备注说明" prop="desc">
+      <el-input v-model="form.desc" type="textarea" :rows="5"></el-input>
     </el-form-item>
     <el-form-item>
-      <el-button type="primary" @click="onConfirm">{{ row.uuid ? '修改' : '添加' }}</el-button>
+      <el-button type="primary" @click="onConfirm">{{ active === 'edit' ? '修改' : '添加' }}</el-button>
     </el-form-item>
   </el-form>
 </template>
 <script setup>
 import { v4 as uuid } from 'uuid'
-import { ref, defineEmits, defineProps } from 'vue'
-import { useStorage } from '@vueuse/core'
+import { ref, defineEmits, defineProps, watch } from 'vue'
+import { manifest } from './common'
 
 const emit = defineEmits(['back'])
 
 const props = defineProps({
+  active: {
+    type: String
+  },
   row: {
     type: Object,
     default: () => ({})
   }
 })
-const config = useStorage(
-  'package',
-  {},
-  localStorage,
-  { mergeDefaults: true }
-)
-const tableData = useStorage(
-  'scripts',
-  [],
-  localStorage,
-  { mergeDefaults: true }
-)
+
+const tableData = ref(manifest.value.commands)
 const defaultRef = () => ({
   form: Object.assign({
     name: '',
@@ -76,13 +80,14 @@ const defaultRef = () => ({
     port: '',
     nodeVersion: '',
     keywords: '',
-    commands: '',
-    autoRun: false
+    commandLines: '',
+    desc: '',
+    defaultRun: false
   }, props.row.uuid ? props.row : {})
 })
 const form = ref(defaultRef().form)
 const onConfirm = () => {
-  if (props.row.uuid) {
+  if (props.active === 'edit' && props.row.uuid) {
     tableData.value = tableData.value.map((item) => {
       return item.uuid === props.row.uuid ? Object.assign({}, item, form.value) : item
     })
@@ -92,11 +97,21 @@ const onConfirm = () => {
     }))
     form.value = defaultRef().form
   }
-  config.value = Object.assign({}, config.value, {
-    scripts: tableData.value
+  manifest.value = Object.assign({}, manifest.value, {
+    commands: tableData.value
   })
   setTimeout(() => {
     emit('back')
-  }, 50000)
+  }, 500)
 }
+watch(() => props.active, () => {
+  form.value = defaultRef().form
+})
 </script>
+<style lang="scss" scoped>
+.el-form-item {
+  .el-select, :deep(.el-input,.el-select) {
+    width: 100%;
+  }
+}
+</style>
