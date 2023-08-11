@@ -1,0 +1,9 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_CLASSES_ROOT\Directory\Background\shell\ps_command_manager]
+@="打开脚本管理器(&M)"
+"Icon"="powershell.exe"
+
+[HKEY_CLASSES_ROOT\Directory\Background\shell\ps_command_manager\command]
+;注意: 这里的路径需要修改成脚本所在的路径↓↓
+@="cmd.exe /C PowerShell.exe -file \"__dir__\\command.ps1\""
