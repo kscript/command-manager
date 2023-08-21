@@ -13,7 +13,7 @@
     </el-aside>
     <el-main>
       <Add :active="active" v-if="['add', 'edit', 'copy'].includes(active)" :row="activeRow" @back="active = 'list'"/>
-      <List v-if="active === 'list'" @edit="row => handleEdit('edit', row)" @copy="row => handleEdit('copy', row)"/>
+      <List v-if="active === 'list'" @edit="row => handleEdit('edit', row)" @copy="row => handleEdit('copy', row)" @start="onStart(row)" @stop="onStop(row)"/>
       <Manifest v-if="active === 'manifest'"/>
     </el-main>
   </el-container>
@@ -28,6 +28,10 @@ const activeRow = ref({})
 const handleEdit = (type, row) => {
   active.value = type
   activeRow.value = row
+}
+const onStart = (row) => {
+}
+const onStop = (row) => {
 }
 </script>
 <style lang="scss" scoped>

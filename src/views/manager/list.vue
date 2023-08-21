@@ -11,6 +11,8 @@
       <template #default="{ row }">
         <el-button type="primary" size="small" @click="emit('edit', row)">修改</el-button>
         <el-button type="primary" size="small" @click="emit('copy', row)">复制</el-button>
+        <el-button type="primary" size="small" @click="emit('start', row)">运行</el-button>
+        <el-button type="primary" size="small" @click="emit('stop', row)">停止</el-button>
       </template>
     </el-table-column>
   </el-table>
@@ -22,7 +24,7 @@
 <script setup>
 import { ref, defineEmits } from 'vue'
 import { handleDownload, manifest } from './common'
-const emit = defineEmits(['edit', 'copy'])
+const emit = defineEmits(['edit', 'copy', 'run', 'stop'])
 const tableData = ref(manifest.value.commands)
 </script>
 <style scoped>
