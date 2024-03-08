@@ -17,3 +17,6 @@ const download = (content) => {
 export const handleDownload = () => {
   download(JSON.stringify(manifest.value, null, 2))
 }
+export const handleOutput = () => {
+  console.log(manifest.value)
+}

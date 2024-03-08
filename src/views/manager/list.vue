@@ -7,6 +7,7 @@
     <el-table-column prop="keywords" label="关键词" />
     <el-table-column prop="nodeVersion" label="node版本" />
     <el-table-column prop="terminal" label="终端" />
+    <el-table-column prop="desc" label="备注" />
     <el-table-column prop="handle" label="操作">
       <template #default="{ row }">
         <el-button type="primary" size="small" @click="emit('edit', row)">修改</el-button>
@@ -15,13 +16,14 @@
     </el-table-column>
   </el-table>
   <el-space>
+    <el-button type="info" @click="handleOutput">输出配置</el-button>
     <el-button type="success" @click="handleDownload">导出配置</el-button>
   </el-space>
 </template>
 
 <script setup>
 import { ref, defineEmits } from 'vue'
-import { handleDownload, manifest } from './common'
+import { handleOutput, handleDownload, manifest } from './common'
 const emit = defineEmits(['edit', 'copy'])
 const tableData = ref(manifest.value.commands)
 </script>
