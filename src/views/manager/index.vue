@@ -13,12 +13,14 @@
     </el-aside>
     <el-main>
       <Add :active="active" v-if="['add', 'edit', 'copy'].includes(active)" :row="activeRow" @back="active = 'list'" />
-      <List v-if="active === 'list'" @edit="row => handleEdit('edit', row)" @copy="row => handleEdit('copy', row)" />
+      <List v-if="active === 'list'" @open="handleOpen" @edit="row => handleEdit('edit', row)"
+        @copy="row => handleEdit('copy', row)" />
       <Manifest v-if="active === 'manifest'" />
     </el-main>
   </el-container>
 </template>
 <script setup>
+import api from '@/api'
 import { ref } from 'vue'
 import Add from './add'
 import List from './list'
@@ -28,6 +30,9 @@ const activeRow = ref({})
 const handleEdit = (type, row) => {
   active.value = type
   activeRow.value = row
+}
+const handleOpen = (row) => {
+  api.open(row)
 }
 </script>
 <style lang="scss" scoped>
