@@ -36,11 +36,7 @@
       </el-col>
       <el-col :span="8">
         <el-form-item label="默认运行" prop="defaultRun">
-          <el-switch
-            v-model="form.defaultRun"
-            active-text="开启"
-            inactive-text="关闭"
-          />
+          <el-switch v-model="form.defaultRun" active-text="开启" inactive-text="关闭" />
         </el-form-item>
       </el-col>
     </el-row>
@@ -51,21 +47,18 @@
       <el-input v-model="form.desc" type="textarea" :rows="5"></el-input>
     </el-form-item>
     <el-form-item>
-      <el-button type="primary" @click="onConfirm">{{ active === 'edit' ? '修改' : '添加' }}</el-button>
+      <el-button type="primary" @click="onConfirm">{{ route.name === 'managerEdit' ? '修改' : '添加' }}</el-button>
     </el-form-item>
   </el-form>
 </template>
 <script setup>
 import { v4 as uuid } from 'uuid'
-import { ref, defineEmits, defineProps, watch } from 'vue'
+import { ref, defineProps, watch } from 'vue'
 import { manifest } from './common'
-
-const emit = defineEmits(['back'])
-
+import { useRoute } from 'vue-router'
+import router from '@/router'
+const route = useRoute()
 const props = defineProps({
-  active: {
-    type: String
-  },
   row: {
     type: Object,
     default: () => ({})
@@ -101,16 +94,31 @@ const onConfirm = () => {
     commands: tableData.value
   })
   setTimeout(() => {
-    emit('back')
+    router.replace({
+      name: 'managerList'
+    })
   }, 500)
 }
 watch(() => props.active, () => {
   form.value = defaultRef().form
 })
+watch(() => route.name, () => {
+  if (/^manager/.test(route.name)) {
+    if (route.query.uuid) {
+      form.value = tableData.value.find((item) => item.uuid === route.query.uuid)
+    } else {
+      form.value = defaultRef().form
+    }
+  }
+}, {
+  immediate: true
+})
 </script>
 <style lang="scss" scoped>
 .el-form-item {
-  .el-select, :deep(.el-input,.el-select) {
+
+  .el-select,
+  :deep(.el-input, .el-select) {
     width: 100%;
   }
 }

@@ -1,38 +1,37 @@
 <template>
   <el-container>
     <el-aside width="240px">
-      <el-row @click="active = 'manifest'">
-        配置
-      </el-row>
-      <el-row @click="active = 'list'">
-        命令列表
-      </el-row>
-      <el-row @click="active = 'add'">
-        新增命令
+      <el-row v-for="(item, index) in menus" :key="index" :class="{ 'active': item.name === route.name }"
+        @click="handleClick(item.name)">
+        {{ item.label }}
       </el-row>
     </el-aside>
     <el-main>
-      <Add :active="active" v-if="['add', 'edit', 'copy'].includes(active)" :row="activeRow" @back="active = 'list'" />
-      <List v-if="active === 'list'" @open="handleOpen" @edit="row => handleEdit('edit', row)"
-        @copy="row => handleEdit('copy', row)" />
-      <Manifest v-if="active === 'manifest'" />
+      <router-view></router-view>
     </el-main>
   </el-container>
 </template>
 <script setup>
-import api from '@/api'
 import { ref } from 'vue'
-import Add from './add'
-import List from './list'
-import Manifest from './manifest'
-const active = ref('manifest')
-const activeRow = ref({})
-const handleEdit = (type, row) => {
-  active.value = type
-  activeRow.value = row
-}
-const handleOpen = (row) => {
-  api.open(row)
+import { useRoute } from 'vue-router'
+import router from '@/router'
+const route = useRoute()
+const menus = ref([
+  {
+    name: 'managerManifest',
+    label: '配置'
+  },
+  {
+    name: 'managerList',
+    label: '命令列表'
+  },
+  {
+    name: 'managerAdd',
+    label: '新增命令'
+  }
+])
+const handleClick = (active) => {
+  router.push({ name: active })
 }
 </script>
 <style lang="scss" scoped>
@@ -47,11 +46,15 @@ const handleOpen = (row) => {
   .el-row {
     padding: 10px;
     cursor: pointer;
-    transition: all 1s;
+    transition: all .3s;
+    color: #555;
 
     &:hover {
       color: #111;
-      background: #eee;
+    }
+
+    &.active {
+      color: var(--el-color-primary);
     }
   }
 }

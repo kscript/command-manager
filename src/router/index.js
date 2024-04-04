@@ -6,15 +6,40 @@ const routes = [
     path: '/',
     name: 'home',
     component: HomeView,
-    redirect: '/manager'
+    redirect: '/manager/manifest'
   },
   {
     path: '/manager',
     name: 'manager',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/manager/index.vue')
+    redirect: '/manager/manifest',
+    component: () => import(/* webpackChunkName: "manager" */ '../views/manager/index.vue'),
+    children: [
+      {
+        path: '/manager/add',
+        name: 'managerAdd',
+        component: () => import(/* webpackChunkName: "managerAdd" */ '../views/manager/add.vue')
+      },
+      {
+        path: '/manager/edit',
+        name: 'managerEdit',
+        component: () => import(/* webpackChunkName: "managerEdit" */ '../views/manager/add.vue')
+      },
+      {
+        path: '/manager/copy',
+        name: 'managerCopy',
+        component: () => import(/* webpackChunkName: "managerCopy" */ '../views/manager/add.vue')
+      },
+      {
+        path: '/manager/list',
+        name: 'managerList',
+        component: () => import(/* webpackChunkName: "managerList" */ '../views/manager/list.vue')
+      },
+      {
+        path: '/manager/manifest',
+        name: 'managerManifest',
+        component: () => import(/* webpackChunkName: "managerManifest" */ '../views/manager/manifest.vue')
+      }
+    ]
   }
 ]
 

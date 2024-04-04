@@ -59,7 +59,7 @@
 <script setup>
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { reactive, watch, ref } from 'vue'
-import { manifest, handleImport, handleExport } from './common'
+import { manifest, handleImport, handleImportBefore, handleExportBefore } from './common'
 const type = ref('String')
 const types = ref(['String', 'Number', 'Boolean'])
 const property = ref('')
@@ -68,35 +68,6 @@ const addDialogVisible = ref(false)
 const propertys = reactive({})
 const form = reactive({})
 const baseForm = reactive({})
-const state = reactive({
-  import: false,
-  export: false
-})
-const handleImportBefore = (event) => {
-  if (!state.import) {
-    ElMessageBox.confirm('导入配置后, 将会覆盖当前配置, 是否确认?', {
-      title: '确认导入配置',
-      type: 'warning'
-    }).then(() => {
-      state.import = true
-      event.target.click()
-    }).catch(console.log)
-    event.stopPropagation()
-  }
-}
-const handleExportBefore = (event) => {
-  if (!state.export) {
-    manifest.value.path && ElMessageBox.confirm(`是否要导出配置到 ${manifest.value.path}`, {
-      title: '确认导出配置',
-      type: 'warning'
-    }).then(() => {
-      state.export = true
-      handleExport()
-    }).catch(console.log)
-  } else {
-    handleExport()
-  }
-}
 const handleAddDialog = () => {
   addDialogVisible.value = true
 }
