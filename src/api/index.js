@@ -5,5 +5,11 @@ export default {
   },
   open (data) {
     return fetchApi('open', 'post', data)
+  },
+  exec (data) {
+    return fetchApi('exec', 'post', data)
+  },
+  stop (data) {
+    return fetchApi('stop', 'post', data)
   }
 }
