@@ -1,9 +1,10 @@
 {
   "name": "command-manager",
-  "version": "0.1.3",
+  "version": "0.2.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
+    "start": "vue-cli-service serve --port 27000",
+    "server": "node ./server",
     "build": "vue-cli-service build && node ./build",
     "lint": "vue-cli-service lint"
   },
@@ -29,6 +30,17 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^5.1.0",
     "eslint-plugin-vue": "^8.0.3",
+    "fs-extra": "^11.2.0",
+    "http": "0.0.1-security",
+    "koa": "^2.15.2",
+    "koa-bodyparser": "^4.4.1",
+    "koa-json": "^2.0.2",
+    "koa-logger": "^3.2.1",
+    "koa-onerror": "^4.2.0",
+    "koa-router": "^12.0.1",
+    "koa-static": "^5.0.0",
+    "koa-views": "^8.1.0",
+    "koa2-cors": "^2.0.6",
     "sass": "^1.32.7",
     "sass-loader": "^12.0.0"
   }
