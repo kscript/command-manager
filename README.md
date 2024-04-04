@@ -35,6 +35,6 @@
 5. 选择要执行的脚本 (使用 `鼠标`或 `上下方向键`选择后按 `回车键`)  
   ![选择要执行的脚本](./picture/5.png)  
 6. 在shell目录下，找到 [manifest.json](./shell/manifest.json) 文件，根据示例配置项，做相应修改  
-  ![修改配置](./picture/5.png)  
+  ![修改配置](./picture/6.png)  
   如果觉得不直观，可以在当前项目附带的[前端应用](https://kscript.github.io/command-manager/manager)中编辑  
   ![在当前项目附带的前端应用中编辑配置](./picture/7.png)  
