@@ -1,4 +1,8 @@
 import { useStorage } from '@vueuse/core'
+import { ElMessage } from 'element-plus'
+
+import api from '@/api'
+import { downloadFile } from '@/utils'
 
 export const manifest = useStorage(
   'manifest',
@@ -7,16 +11,26 @@ export const manifest = useStorage(
   { mergeDefaults: true }
 )
 
-const download = (content) => {
-  const link = document.createElement('a')
-  link.href = URL.createObjectURL(new Blob([content]))
-  link.download = 'manifest.json'
-  link.click()
+export const handleImport = async (file) => {
+  try {
+    const data = await file.text()
+    // eslint-disable-next-line
+    manifest.value = eval('(' + data + ')')
+  } catch (err) {
+    console.warn(err)
+  }
+  return false
 }
 
-export const handleDownload = () => {
-  download(JSON.stringify(manifest.value, null, 2))
+export const handleExport = () => {
+  api.export(manifest.value).then(() => {
+    ElMessage.success('导出成功')
+  })
+    .catch(() => {
+      downloadFile(JSON.stringify(manifest.value, null, 2))
+    })
 }
+
 export const handleOutput = () => {
   console.log(manifest.value)
 }

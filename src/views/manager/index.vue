@@ -12,9 +12,9 @@
       </el-row>
     </el-aside>
     <el-main>
-      <Add :active="active" v-if="['add', 'edit', 'copy'].includes(active)" :row="activeRow" @back="active = 'list'"/>
-      <List v-if="active === 'list'" @edit="row => handleEdit('edit', row)" @copy="row => handleEdit('copy', row)"/>
-      <Manifest v-if="active === 'manifest'"/>
+      <Add :active="active" v-if="['add', 'edit', 'copy'].includes(active)" :row="activeRow" @back="active = 'list'" />
+      <List v-if="active === 'list'" @edit="row => handleEdit('edit', row)" @copy="row => handleEdit('copy', row)" />
+      <Manifest v-if="active === 'manifest'" />
     </el-main>
   </el-container>
 </template>
@@ -33,14 +33,17 @@ const handleEdit = (type, row) => {
 <style lang="scss" scoped>
 .el-aside {
   padding: 10px;
+
   &:first-child {
     border-right: 1px solid #eee;
     margin-right: 10px;
   }
+
   .el-row {
     padding: 10px;
     cursor: pointer;
     transition: all 1s;
+
     &:hover {
       color: #111;
       background: #eee;
