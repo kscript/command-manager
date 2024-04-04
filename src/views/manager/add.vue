@@ -53,21 +53,14 @@
 </template>
 <script setup>
 import { v4 as uuid } from 'uuid'
-import { ref, defineProps, watch } from 'vue'
+import { ref, watch } from 'vue'
 import { manifest } from './common'
 import { useRoute } from 'vue-router'
 import router from '@/router'
-const route = useRoute()
-const props = defineProps({
-  row: {
-    type: Object,
-    default: () => ({})
-  }
-})
 
-const tableData = ref(manifest.value.commands)
+const route = useRoute()
 const defaultRef = () => ({
-  form: Object.assign({
+  form: {
     name: '',
     path: '',
     port: '',
@@ -76,13 +69,16 @@ const defaultRef = () => ({
     commandLines: '',
     desc: '',
     defaultRun: false
-  }, props.row.uuid ? props.row : {})
+  }
 })
+
 const form = ref(defaultRef().form)
+const tableData = ref(manifest.value.commands)
+
 const onConfirm = () => {
-  if (props.active === 'edit' && props.row.uuid) {
+  if (route.name === 'managerEdit' && route.query.uuid) {
     tableData.value = tableData.value.map((item) => {
-      return item.uuid === props.row.uuid ? Object.assign({}, item, form.value) : item
+      return item.uuid === route.query.uuid ? Object.assign({}, item, form.value) : item
     })
   } else {
     tableData.value = tableData.value.concat(Object.assign({}, form.value, {
@@ -99,9 +95,7 @@ const onConfirm = () => {
     })
   }, 500)
 }
-watch(() => props.active, () => {
-  form.value = defaultRef().form
-})
+
 watch(() => route.name, () => {
   if (/^manager/.test(route.name)) {
     if (route.query.uuid) {
