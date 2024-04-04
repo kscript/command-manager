@@ -13,7 +13,7 @@
       "tags": "example",
       "uuid": "962a5cc0-ea7d-471e-aa44-393cf8e52177",
       "terminal": "cmd",
-      "commandLines": 'dir\npause'
+      "commandLines": "dir\npause"
     },
     {
       "name": "演示命令2",
@@ -26,8 +26,8 @@
       "uuid": "9f246522-2e3b-4e3a-93aa-eb0a0eaa47ae",
       "terminal": "cmd",
       "commandLines": [
-        'dir',
-        'pause'
+        "dir",
+        "pause"
       ]
     }
   ]
