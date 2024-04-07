@@ -74,7 +74,6 @@ const defaultRef = () => ({
 
 const form = ref(defaultRef().form)
 const tableData = ref(manifest.value.commands)
-
 const onConfirm = () => {
   if (route.name === 'managerEdit' && route.query.uuid) {
     tableData.value = tableData.value.map((item) => {
@@ -99,7 +98,7 @@ const onConfirm = () => {
 watch(() => route.name, () => {
   if (/^manager/.test(route.name)) {
     if (route.query.uuid) {
-      form.value = tableData.value.find((item) => item.uuid === route.query.uuid)
+      form.value = Object.assign({}, tableData.value.find((item) => item.uuid === route.query.uuid))
     } else {
       form.value = defaultRef().form
     }

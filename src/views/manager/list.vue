@@ -1,8 +1,16 @@
 <template>
-  <el-table :data="tableData" @row-dblclick="row => handleRow('managerEdit', row)">
+  <el-table :data="tableData" @row-dblclick="row => handleRow('managerEdit', row)" border>
     <el-table-column type="index" label="序号" width="60" />
     <el-table-column prop="name" label="名称" width="120" />
-    <el-table-column prop="port" label="端口" width="120" />
+    <el-table-column prop="port" label="端口">
+      <template #default="{ row }">
+        <template v-for="(port, index) in row.port.split(',')">
+          <el-button v-if="port" :key="index" type="primary" size="small" @click="toPortLink(row, port)" plain>
+            {{ port }}
+          </el-button>
+        </template>
+      </template>
+    </el-table-column>
     <el-table-column prop="nodeVersion" label="node版本" width="90" />
     <el-table-column prop="terminal" label="终端" width="64" />
     <el-table-column prop="path" label="脚本路径" />
@@ -28,7 +36,6 @@ import { manifest } from './common'
 import router from '@/router'
 import { ElMessageBox } from 'element-plus'
 const handleRow = (type, row) => {
-  console.log(row)
   router.push({
     name: type,
     query: {
@@ -52,6 +59,9 @@ const handleDelete = (row, $index) => {
   }).then(() => {
     tableData.value.splice($index)
   }).catch(console.log)
+}
+const toPortLink = (row, port) => {
+  window.open(`http://localhost:${port}`)
 }
 const tableData = ref(manifest.value.commands)
 </script>

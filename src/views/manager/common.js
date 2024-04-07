@@ -42,19 +42,24 @@ export const handleImport = async (file) => {
 
 export const handleExportBefore = (event) => {
   if (!state.export) {
-    manifest.value.path && ElMessageBox.confirm(`是否要导出配置到 ${manifest.value.path}`, {
-      title: '确认导出配置',
-      type: 'warning'
-    }).then(() => {
+    if (manifest.value.path) {
+      ElMessageBox.confirm(`是否要导出配置到 ${manifest.value.path}`, {
+        title: '确认导出配置',
+        type: 'warning'
+      }).then(() => {
+        state.export = true
+        handleExport()
+      }).catch(console.log)
+    } else {
       state.export = true
       handleExport()
-    }).catch(console.log)
+    }
   } else {
     handleExport()
   }
 }
 export const handleExport = () => {
-  api.export(manifest.value).then(() => {
+  return api.export(manifest.value).then(() => {
     ElMessage.success('导出成功')
   })
     .catch(() => {

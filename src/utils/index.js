@@ -13,6 +13,8 @@ export const fetchApi = (url, method, data) => {
       .then((res) => {
         if (res.code === 200) {
           resolve(res)
+        } else {
+          reject(res)
         }
       })
       .catch(reject)
