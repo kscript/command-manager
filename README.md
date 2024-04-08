@@ -20,21 +20,33 @@
 是的，这就是 `命令管理器`的使用场景，让你摆脱琐碎的重复性工作，在Windows资源管理内随时随地，快捷地运行你想要运行的项目。  
 
 ## 使用方法
+这里提供两种方式进行配置
+- ### 使用脚本快速开始
+  > 执行脚本时, 会提示编辑注册表项, 是用来添加右键菜单的, 如果不希望添加右键菜单，可以选否
+  ```
+  git clone https://github.com/kscript/command-manager.git
+  cd command-manager
+  npm run quickstart
+  ```
+- ### 按照步骤配置
+  <details>
+  <summary>点击查看详细步骤</summary>
 
-1. clone当前项目  
-  ![clone当前项目](./picture/1.png)  
+  1. clone当前项目  
+    ![clone当前项目](./picture/1.png)  
 
-2. 在项目的shell目录下，找到 [install.cmd](./shell/install.cmd) 文件  
-  ![找到install.md文件](./picture/2.png)  
+  2. 在项目的shell目录下，找到 [install.cmd](./shell/install.cmd) 文件  
+    ![找到install.md文件](./picture/2.png)  
 
-3. 双击运行[install.cmd](./shell/install.cmd) 文件(用于注册右键菜单)  
-  ![双击install.md文件，注册右键菜单](./picture/3.png)  
+  3. 双击运行[install.cmd](./shell/install.cmd) 文件(用于注册右键菜单)  
+    ![双击install.md文件，注册右键菜单](./picture/3.png)  
 
-4. 注册成功后，在Windows资源管理器内点击鼠标右键，选择 `打开脚本管理器`菜单项  
-  ![右键菜单](./picture/4.png)  
-5. 选择要执行的脚本 (使用 `鼠标`或 `上下方向键`选择后按 `回车键`)  
-  ![选择要执行的脚本](./picture/5.png)  
-6. 在shell目录下，找到 [manifest.json](./shell/manifest.json) 文件，根据示例配置项，做相应修改  
-  ![修改配置](./picture/6.png)  
-  如果觉得不直观，可以在当前项目附带的[前端应用](https://kscript.github.io/command-manager/manager)中编辑  
-  ![在当前项目附带的前端应用中编辑配置](./picture/7.png)  
+  4. 注册成功后，在Windows资源管理器内点击鼠标右键，选择 `打开脚本管理器`菜单项  
+    ![右键菜单](./picture/4.png)  
+  5. 选择要执行的脚本 (使用 `鼠标`或 `上下方向键`选择后按 `回车键`)  
+    ![选择要执行的脚本](./picture/5.png)  
+  6. 在shell目录下，找到 [manifest.json](./shell/manifest.json) 文件，根据示例配置项，做相应修改  
+    ![修改配置](./picture/6.png)  
+    如果觉得不直观，可以在当前项目附带的[前端应用](https://kscript.github.io/command-manager/manager)中编辑  
+    ![在当前项目附带的前端应用中编辑配置](./picture/7.png)  
+  </details>

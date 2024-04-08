@@ -6,6 +6,8 @@
     "start": "vue-cli-service serve --port 27000",
     "server": "node ./server",
     "build": "vue-cli-service build && node ./build",
+    "setup": "powershell.exe -ExecutionPolicy Bypass -File \".\\shell\\internal\\setup.ps1\"",
+    "quickstart": "start npm run server && start npm run start && npm run setup",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
