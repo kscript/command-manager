@@ -1,4 +1,294 @@
-* {
-    padding: 0;
-    margin: 0;
+@each $i,
+$p in (w: width,
+    h: height) {
+
+    @each $s,
+    $v in (0: 0,
+        50: 50%,
+        100: 100%,
+        auto: auto) {
+        .#{$i}-#{$s} {
+            #{$p}: #{$v} !important;
+        }
+    }
+}
+
+@for $n from 0 to 10 {
+    .opa-#{$n * 10} {
+        opacity: #{$n * 0.1};
+    }
+}
+
+@for $n from 0 to 25 {
+    .col-#{$n} {
+        width: #{$n * 4.166666666667%} !important;
+    }
+}
+
+$cursor: (
+    pointer: pointer,
+    auto: auto
+);
+
+@each $i,
+$v in $cursor {
+    .cursor-#{$i} {
+        cursor: #{$v};
+    }
+}
+
+
+$display: (
+    inline: 'inline',
+    inline-block: 'inline-block',
+    block: 'block',
+    hidden: 'none',
+    flex: 'flex',
+    inline-flex: 'inline-flex'
+);
+
+@each $i,
+$v in $display {
+    .d-#{$i} {
+        display: #{$v};
+    }
+}
+
+.d-child-flex {
+    display: flex;
+
+    >* {
+        flex: 1;
+    }
+}
+
+$flex: (
+    auto: 'auto',
+    none: 'none'
+);
+
+@each $i,
+$v in $flex {
+    .fl-#{$i} {
+        flex: #{$v};
+    }
+}
+
+@for $i from 0 to 13 {
+    .fl-#{$i} {
+        flex: #{$i}
+    }
+}
+
+$align: (
+    start: 'flex-start',
+    end: 'flex-end',
+    baseline: 'baseline',
+    center: 'center',
+    normal: 'normal'
+);
+
+@each $i,
+$v in $align {
+    .align-#{$i} {
+        align-items: #{$v};
+    }
+}
+
+@each $i,
+$v in $align {
+    .align-self-#{$i} {
+        align-self: #{$v};
+    }
+}
+
+$justify: (
+    start: 'flex-start',
+    end: 'flex-end',
+    center: 'center',
+    between: 'space-between',
+    normal: 'normal'
+);
+
+@each $i,
+$v in $justify {
+    .justify-#{$i} {
+        justify-content: #{$v};
+    }
+}
+
+@each $i,
+$v in $justify {
+    .justify-self-#{$i} {
+        justify-self: #{$v};
+    }
+}
+
+$wrap: (
+    wrap: 'wrap',
+    nowrap: 'nowrap',
+    wrap-reverse: 'wrap-reverse'
+);
+
+@each $i,
+$v in $wrap {
+    .fl-#{$i} {
+        flex-wrap: #{$v};
+    }
+}
+
+$vertical: (
+    middle: 'middle',
+    top: 'text-top',
+    bottom: 'text-bottom',
+    baseline: 'baseline'
+);
+
+@each $i,
+$v in $vertical {
+    .ver-#{$i} {
+        vertical-align: #{$v};
+    }
+}
+
+@each $i,
+$v in (fs: 'font-size',
+    lh: 'line-height'
+
+) {
+    @for $n from 0 to 20 {
+        .#{$i}-#{$n * 2 + 12} {
+            #{$v}: #{$n * 2 + 12}px;
+        }
+    }
+}
+
+$color: (
+    primary: 'primary',
+    success: 'success',
+    warning: 'warning',
+    danger: 'danger',
+    error: 'error',
+    info: 'info',
+    gray: 'gray',
+    white: 'white',
+    black: 'black'
+);
+
+$gray: #eee;
+
+@each $k,
+$c in $color {
+
+    .text-#{$c},
+    .#{$c}--text {
+        color: var(--el-color-#{$c}, #{$gray});
+    }
+
+    .bg-#{$c} {
+        background-color: var(--el-color-#{$c}, #{$gray});
+    }
+
+    .bb-#{$c} {
+        --border-color: var(--el-color-#{$c}, #{$gray});
+    }
+}
+
+@each $align in left,
+center,
+right {
+    .text-#{$align} {
+        text-align: #{$align};
+    }
+}
+
+@each $align in left,
+center,
+right {
+    .float-#{$align} {
+        float: #{$align};
+    }
+}
+
+@each $event in auto,
+none {
+    .event-#{$event} {
+        pointer-events: #{$event};
+    }
+}
+
+$pos: (
+    rel: 'relative',
+    abs: 'absolute',
+    fix: 'fixed'
+);
+
+@each $i,
+$v in $pos {
+    .#{$i} {
+        position: #{$v};
+    }
+}
+
+@each $p in top,
+right,
+bottom,
+left {
+    @for $i from 0 to 13 {
+        .#{$p}-#{$i} {
+            #{$p}: #{$i * 4}px;
+        }
+    }
+}
+
+$box: (
+    m: 'margin',
+    p: 'padding'
+);
+$dir: (
+    t: 'top',
+    r: 'right',
+    b: 'bottom',
+    l: 'left'
+);
+
+@each $b,
+$bv in $box {
+    @for $i from 0 to 13 {
+        .#{$b}a-#{$i} {
+            #{$bv}: #{$i * 4}px;
+        }
+    }
+
+    @each $d,
+    $dv in $dir {
+        @for $i from 0 to 13 {
+            .#{$b}#{$d}-#{$i} {
+                #{$bv}-#{$dv}: #{$i * 4}px;
+            }
+        }
+    }
+
+    @for $i from 0 to 13 {
+        .#{$b}x-#{$i} {
+            #{$bv}-left: #{$i * 4}px;
+            #{$bv}-right: #{$i * 4}px;
+        }
+    }
+
+    @for $i from 0 to 13 {
+        .#{$b}y-#{$i} {
+            #{$bv}-top: #{$i * 4}px;
+            #{$bv}-bottom: #{$i * 4}px;
+        }
+    }
+}
+
+@each $d,
+$dv in $dir {
+    @for $i from 0 to 13 {
+        .b#{$d}-#{$i} {
+            border-#{$dv}: #{$i}px var(--border-style, solid) var(--border-color) !important;
+        }
+    }
 }
