@@ -1,0 +1,10 @@
+﻿Windows Registry Editor Version 5.00
+
+;右键菜单项1, 执行脚本, 显示cmd窗口
+[HKEY_CLASSES_ROOT\Directory\Background\shell\ps_npm_scripts]
+@="执行NPM脚本(&M)"
+"Icon"="powershell.exe"
+
+[HKEY_CLASSES_ROOT\Directory\Background\shell\ps_npm_scripts\command]
+;注意: 这里的路径需要修改成脚本所在的路径↓↓
+@="cmd.exe /C PowerShell.exe -file \"E:\\web\\command-manager\\shell\\internal\\package1.ps1\""

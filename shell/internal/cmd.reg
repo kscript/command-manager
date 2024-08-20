@@ -1,0 +1,24 @@
+Windows Registry Editor Version 5.00
+[-HKEY_CLASSES_ROOT\Directory\shell\runas]
+[HKEY_CLASSES_ROOT\Directory\shell\runas]
+@="以管理员身份运行命令行"
+"HasLUAShield"=""
+[HKEY_CLASSES_ROOT\Directory\shell\runas\command]
+@="cmd.exe /s /k pushd \"%V\""
+[-HKEY_CLASSES_ROOT\Directory\Background\shell\runas]
+[HKEY_CLASSES_ROOT\Directory\Background\shell\runas]
+@="以管理员身份运行命令行"
+"HasLUAShield"=""
+[HKEY_CLASSES_ROOT\Directory\Background\shell\runas\command]
+@="cmd.exe /s /k pushd \"%V\""
+[-HKEY_CLASSES_ROOT\Drive\shell\runas]
+[HKEY_CLASSES_ROOT\Drive\shell\runas]
+@="以管理员身份运行命令行"
+"HasLUAShield"=""
+[HKEY_CLASSES_ROOT\Drive\shell\runas\command]
+@="cmd.exe /s /k pushd \"%V\""
+[-HKEY_CLASSES_ROOT\LibraryFolder\background\shell\runas]
+[HKEY_CLASSES_ROOT\LibraryFolder\background\shell\runas]
+"HasLUAShield"=""
+@="以管理员身份运行命令行"
+[HKEY_CLASSES_ROOT\LibraryFolder\background\shell\runas\command]
