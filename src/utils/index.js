@@ -1,6 +1,6 @@
 import config from '@/config'
 
-export const fetchApi = (url, method, data) => {
+export const fetchApi = (url, method = 'get', data = {}) => {
   return new Promise((resolve, reject) => {
     fetch(`${config.baseUrl}${url}`, {
       method,

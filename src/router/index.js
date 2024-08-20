@@ -40,6 +40,11 @@ const routes = [
             component: () => import(/* webpackChunkName: "managerManifest" */ '../views/manager/manifest.vue')
           }
         ]
+      },
+      {
+        path: '/market',
+        name: 'market',
+        component: () => import(/* webpackChunkName: "market" */ '../views/market/index.vue')
       }
     ]
   }
