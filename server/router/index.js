@@ -1,12 +1,17 @@
 const path = require('path')
 const fs = require('fs-extra')
 const router = require('koa-router')()
+const market = require('../data/market')
 const { useResponse } = require('../utils')
 const { exec, spawn } = require('child_process')
 const commandList = {}
 
 router.get('/', async (ctx) => {
     await ctx.render('index', {})
+})
+
+router.post('/market', async (ctx) => {
+    useResponse(ctx, market, 200)
 })
 
 router.post('/export', async (ctx) => {

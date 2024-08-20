@@ -8,6 +8,7 @@
         </span>
       </el-text>
       <el-space wrap>
+        <el-button @click="toMarket" text>命令市场</el-button>
       </el-space>
     </el-header>
     <router-view></router-view>
@@ -18,6 +19,9 @@
 import router from '@/router'
 const toIndex = () => {
   router.push({ name: 'home' })
+}
+const toMarket = () => {
+  router.push({ name: 'market' })
 }
 </script>
 <style lang="scss">

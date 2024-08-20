@@ -1,5 +1,8 @@
 import { fetchApi } from '@/utils'
 export default {
+  market (data) {
+    return fetchApi('market', 'post', data)
+  },
   export (data) {
     return fetchApi('export', 'post', data)
   },
