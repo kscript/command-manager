@@ -1,5 +1,6 @@
 const path = require('path')
 const fs = require('fs-extra')
+const iconv = require('iconv-lite')
 const router = require('koa-router')()
 const market = require('../data/market')
 const { useResponse } = require('../utils')
@@ -91,8 +92,10 @@ router.post('/exec', async (ctx) => {
         const promises = commands.map((command, index) => {
             return new Promise((resolve, reject) => {
                 if (!command) resolve()
+                let content = ''
                 const child = spawn('cmd.exe', ['/c', command], {
-                    cwd: data.path
+                    cwd: data.path,
+                    encoding: 'utf8'
                 })
                 const item = {
                     command,
@@ -100,7 +103,7 @@ router.post('/exec', async (ctx) => {
                 }
                 current.push(item)
                 child.stdout.on('data', data => {
-                    console.log(`${command} 输出:\n${data}\n`)
+                    content += iconv.decode(data, 'gbk')
                 })
                 child.stderr.on('data', data => {
                     console.error(`${command} 错误:\n${data}\n`)
@@ -112,16 +115,17 @@ router.post('/exec', async (ctx) => {
                     })
                     result[index] = {
                         command,
-                        code
+                        code,
+                        content
                     }
-                    if (code === 0) resolve()
+                    if (code === 0) resolve(content)
                     else reject(code)
                 })
             })
         })
         console.log(commands)
-        const execPromise = () => Promise.all(promises).then(() => {
-            useResponse(ctx, result.slice(data.nodeVersion ? 3 : 2))
+        const execPromise = () => Promise.all(promises).then((data) => {
+            useResponse(ctx, result.slice(data.nodeVersion ? 1 : 0), 200)
         }).catch(error => {
             useResponse(ctx, {}, 500, error.toString())
         }).finally(() => {
@@ -129,7 +133,7 @@ router.post('/exec', async (ctx) => {
                 commandList[data.uuid] = commandList[data.uuid].filter(item => item !== current)
             }
         })
-        if (data.await) {
+        if (data.wait) {
             return execPromise()
         } else {
             execPromise()
