@@ -84,17 +84,18 @@ router.post('/exec', async (ctx) => {
         commands.push('nvm use ' + data.nodeVersion)
     }
     if (typeof data.commandLines === 'string' || Array.isArray(data.commandLines)) {
+        const result = []
         const commandLines = (Array.isArray(data.commandLines) ? data.commandLines : data.commandLines.split('\n'))
         commandLines.map(command => {
             commands.push(command.replace(/(^\s+|\s+$)/g, ''))
         })
-        const result = []
         const promises = commands.map((command, index) => {
             return new Promise((resolve, reject) => {
                 if (!command) resolve()
                 let content = ''
-                const child = spawn('cmd.exe', ['/c', command], {
-                    cwd: data.path,
+                const child = spawn(command, [''], {
+                    shell: true,
+                    env: process.env,
                     encoding: 'utf8'
                 })
                 const item = {
@@ -127,7 +128,7 @@ router.post('/exec', async (ctx) => {
         const execPromise = () => Promise.all(promises).then((data) => {
             useResponse(ctx, result.slice(data.nodeVersion ? 1 : 0), 200)
         }).catch(error => {
-            useResponse(ctx, {}, 500, error.toString())
+            useResponse(ctx, [], 500, error.toString())
         }).finally(() => {
             if (data.uuid) {
                 commandList[data.uuid] = commandList[data.uuid].filter(item => item !== current)
