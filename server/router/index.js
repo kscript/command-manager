@@ -56,17 +56,19 @@ router.post('/open', async (ctx) => {
 })
 
 router.post('/stop', async (ctx) => {
-    data = ctx.request.body
-    console.log(commandList[data.uuid])
-    if (data.uuid && Array.isArray(commandList[data.uuid])) {
-        commandList[data.uuid].forEach(list => {
+    const { uuid } = ctx.request.body
+    console.log(commandList[uuid])
+    if (uuid && Array.isArray(commandList[uuid])) {
+        commandList[uuid].forEach(list => {
             list.forEach(item => {
                 if (!item.close) {
+                    console.log('kill', item.command)
+                    item.close = true
                     item.child.kill('SIGKILL')
                 }
             })
         })
-        delete commandList[data.uuid]
+        delete commandList[uuid]
         return useResponse(ctx, 1)
     }
     useResponse(ctx, 0)
@@ -75,66 +77,83 @@ router.post('/stop', async (ctx) => {
 router.post('/exec', async (ctx) => {
     const current = []
     const commands = []
-    const data = ctx.request.body
-    if (data.uuid) {
-        commandList[data.uuid] = commandList[data.uuid] || []
-        commandList[data.uuid].push(current)
+    const {
+        nodeVersion,
+        path: cwd = process.cwd(),
+        uuid,
+        wait,
+        commandLines
+    } = ctx.request.body
+    if (uuid) {
+        commandList[uuid] = commandList[uuid] || []
+        commandList[uuid].push(current)
     }
-    if (data.nodeVersion) {
-        commands.push('nvm use ' + data.nodeVersion)
+    if (nodeVersion) {
+        commands.push('nvm use ' + nodeVersion)
     }
-    if (typeof data.commandLines === 'string' || Array.isArray(data.commandLines)) {
+    if (typeof commandLines === 'string' || Array.isArray(commandLines)) {
         const result = []
-        const commandLines = (Array.isArray(data.commandLines) ? data.commandLines : data.commandLines.split('\n'))
-        commandLines.map(command => {
-            commands.push(command.replace(/(^\s+|\s+$)/g, ''))
-        })
-        const promises = commands.map((command, index) => {
-            return new Promise((resolve, reject) => {
-                if (!command) resolve()
-                let content = ''
-                const child = spawn(command, [''], {
-                    shell: true,
-                    env: process.env,
-                    encoding: 'utf8'
-                })
-                const item = {
-                    command,
-                    child
-                }
-                current.push(item)
-                child.stdout.on('data', data => {
-                    content += iconv.decode(data, 'gbk')
-                })
-                child.stderr.on('data', data => {
-                    console.error(`${command} 错误:\n${data}\n`)
-                })
-                child.on('close', code => {
-                    Object.assign(item, {
-                        close: true,
-                        code
-                    })
-                    result[index] = {
+        commands.push.apply(
+            commands,
+            (
+                Array.isArray(commandLines)
+                    ? commandLines
+                    : commandLines.split('\n')
+            )
+                .map(command => command.replace(/(^\s+|\s+$)/g, ''))
+        )
+        const promises = commands
+            .filter(command => command && !/^[\s\n]+$/.test(command))
+            .map((command, index) => {
+                return new Promise((resolve, reject) => {
+                    if (!command) resolve()
+                    let content = ''
+                    const child = spawn(
+                        command, [''],
+                        Object.assign({
+                            shell: true,
+                            env: process.env,
+                            encoding: 'utf8',
+                            cwd: cwd
+                        })
+                    )
+                    const item = {
                         command,
-                        code,
-                        content
+                        child
                     }
-                    if (code === 0) resolve(content)
-                    else reject(code)
+                    current.push(item)
+                    child.stdout.on('data', data => {
+                        content += iconv.decode(data, 'gbk')
+                    })
+                    child.stderr.on('data', data => {
+                        console.error(`${command}:\n${data}\n`)
+                    })
+                    child.on('close', code => {
+                        Object.assign(item, {
+                            close: true,
+                            code
+                        })
+                        result[index] = {
+                            command,
+                            code,
+                            content
+                        }
+                        if (code === 0) resolve(content)
+                        else reject(code)
+                    })
                 })
             })
-        })
         console.log(commands)
         const execPromise = () => Promise.all(promises).then((data) => {
-            useResponse(ctx, result.slice(data.nodeVersion ? 1 : 0), 200)
+            useResponse(ctx, result.slice(nodeVersion ? 1 : 0), 200)
         }).catch(error => {
             useResponse(ctx, [], 500, error.toString())
         }).finally(() => {
-            if (data.uuid) {
-                commandList[data.uuid] = commandList[data.uuid].filter(item => item !== current)
+            if (uuid) {
+                commandList[uuid] = commandList[uuid].filter(item => item !== current)
             }
         })
-        if (data.wait) {
+        if (wait) {
             return execPromise()
         } else {
             execPromise()
