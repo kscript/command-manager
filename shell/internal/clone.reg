@@ -1,0 +1,11 @@
+Windows Registry Editor Version 5.00
+;右键菜单项1, 执行脚本, 显示cmd窗口
+[HKEY_CLASSES_ROOT\Directory\Background\shell\git_clone_scripts]
+@="克隆仓库到当前目录"
+"Icon"="cmd.exe"
+[HKEY_CLASSES_ROOT*\shell\git_clone_scripts\command]
+@="\"C:\\Windows\\System32\\cmd.exe\" /c E:\\web\\command-manager\\shell\\internal\\clone.bat\""
+[HKEY_CLASSES_ROOT\Directory\Background\shell\git_clone_scripts\command]
+@="\"C:\\Windows\\System32\\cmd.exe\" /c E:\\web\\command-manager\\shell\\internal\\clone.bat\""
+[HKEY_CLASSES_ROOT\Directory\shell\git_clone_scripts\command]
+@="\"C:\\Windows\\System32\\cmd.exe\" /c E:\\web\\command-manager\\shell\\internal\\clone.bat\""
